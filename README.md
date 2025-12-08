@@ -2,6 +2,8 @@
 
 A comprehensive tag management system (similar to Google Tag Manager) for managing advertising tags and scripts across multiple domains. Built with FastAPI, SQLite, and Vue.js 3.
 
+> **🔒 Security Notice**: All dependencies are up-to-date with latest security patches. See [SECURITY.md](SECURITY.md) for details.
+
 ## Features
 
 - **Multi-Advertiser Support**: Manage multiple advertisers with unique container IDs
