@@ -1,0 +1,15 @@
+[Unit]
+Description=TSPRTG Tag Manager Backend
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/tsprtg/backend
+Environment="PATH=/opt/tsprtg/backend/venv/bin"
+ExecStart=/opt/tsprtg/backend/venv/bin/python /opt/tsprtg/backend/run.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
