@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings
-from typing import Optional
+from typing import Optional, List
 import os
 
 
@@ -8,10 +8,17 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./tsprtg.db"
     # Use environment variable or generate random token if not set
     admin_token: Optional[str] = os.getenv("ADMIN_TOKEN")
-    cors_origins: list = ["*"]
+    cors_origins: str = "*"  # String instead of list for env parsing
     
     class Config:
         env_file = ".env"
+    
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Parse CORS origins string into list"""
+        if self.cors_origins == "*":
+            return ["*"]
+        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
 
 settings = Settings()
