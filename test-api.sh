@@ -59,7 +59,7 @@ echo ""
 
 # Create advertiser-specific script
 echo "7. Creating advertiser-specific script..."
-curl -s -X POST $BASE_URL/api/scripts/advertisers/$ADVERTISER_ID/scripts \
+curl -s -X POST $BASE_URL/api/advertisers/$ADVERTISER_ID/scripts \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Custom Tracking",

@@ -40,18 +40,32 @@ def list_advertisers(db: Session = Depends(get_db)):
 @router.post("", response_model=AdvertiserResponse)
 def create_advertiser(advertiser: AdvertiserCreate, db: Session = Depends(get_db)):
     """Create a new advertiser"""
+    from sqlalchemy.exc import IntegrityError
     
-    # Create new advertiser
-    db_advertiser = Advertiser(
-        name=advertiser.name,
-        container_id=generate_container_id(),
-        domains=json.dumps(advertiser.domains),
-        is_active=advertiser.is_active
-    )
-    
-    db.add(db_advertiser)
-    db.commit()
-    db.refresh(db_advertiser)
+    # Create new advertiser with retry logic for container_id collision
+    max_retries = 5
+    for attempt in range(max_retries):
+        try:
+            db_advertiser = Advertiser(
+                name=advertiser.name,
+                container_id=generate_container_id(),
+                domains=json.dumps(advertiser.domains),
+                is_active=advertiser.is_active
+            )
+            
+            db.add(db_advertiser)
+            db.commit()
+            db.refresh(db_advertiser)
+            break
+        except IntegrityError:
+            db.rollback()
+            if attempt == max_retries - 1:
+                raise HTTPException(
+                    status_code=500,
+                    detail="Failed to generate unique container ID. Please try again."
+                )
+    else:
+        raise HTTPException(status_code=500, detail="Failed to create advertiser")
     
     return AdvertiserResponse(
         id=db_advertiser.id,

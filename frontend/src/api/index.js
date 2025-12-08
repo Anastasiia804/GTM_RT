@@ -53,19 +53,19 @@ export default {
 
   // Advertiser Scripts
   getAdvertiserScripts(advertiserId) {
-    return api.get(`/scripts/advertisers/${advertiserId}/scripts`)
+    return api.get(`/advertisers/${advertiserId}/scripts`)
   },
   createAdvertiserScript(advertiserId, data) {
-    return api.post(`/scripts/advertisers/${advertiserId}/scripts`, data)
+    return api.post(`/advertisers/${advertiserId}/scripts`, data)
   },
   updateAdvertiserScript(advertiserId, scriptId, data) {
-    return api.put(`/scripts/advertisers/${advertiserId}/scripts/${scriptId}`, data)
+    return api.put(`/advertisers/${advertiserId}/scripts/${scriptId}`, data)
   },
   deleteAdvertiserScript(advertiserId, scriptId) {
-    return api.delete(`/scripts/advertisers/${advertiserId}/scripts/${scriptId}`)
+    return api.delete(`/advertisers/${advertiserId}/scripts/${scriptId}`)
   },
   toggleAdvertiserScript(advertiserId, scriptId) {
-    return api.patch(`/scripts/advertisers/${advertiserId}/scripts/${scriptId}/toggle`)
+    return api.patch(`/advertisers/${advertiserId}/scripts/${scriptId}/toggle`)
   },
 
   // Health

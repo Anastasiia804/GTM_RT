@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .config import settings
 from .database import init_db
-from .routers import advertisers, scripts, loader, health
+from .routers import advertisers, scripts, advertiser_scripts, loader, health
 
 # Create FastAPI app
 app = FastAPI(
@@ -23,6 +23,7 @@ app.add_middleware(
 # Include routers
 app.include_router(advertisers.router)
 app.include_router(scripts.router)
+app.include_router(advertiser_scripts.router)
 app.include_router(loader.router)
 app.include_router(health.router)
 

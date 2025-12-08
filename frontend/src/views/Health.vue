@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import api from '../api'
 import HealthStatus from '../components/HealthStatus.vue'
 
@@ -159,7 +159,11 @@ export default {
       loadData()
       // Auto-refresh every 30 seconds
       const interval = setInterval(loadData, 30000)
-      return () => clearInterval(interval)
+      
+      // Cleanup on unmount
+      onBeforeUnmount(() => {
+        clearInterval(interval)
+      })
     })
 
     return {

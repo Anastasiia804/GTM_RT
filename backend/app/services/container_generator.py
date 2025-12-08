@@ -72,14 +72,38 @@ s.src='{script.content}';
 
 
 def minify_js(code: str) -> str:
-    """Basic JavaScript minification"""
-    # Remove comments
+    """Basic JavaScript minification - removes comments and extra whitespace
+    Note: This is a simple minification. For production, consider using a proper
+    JS minifier library like jsmin or integrating with a build tool.
+    """
     lines = []
+    in_string = False
+    string_char = None
+    
     for line in code.split('\n'):
-        # Remove single-line comments
-        if '//' in line:
-            line = line[:line.index('//')]
-        lines.append(line.strip())
+        cleaned = []
+        i = 0
+        while i < len(line):
+            char = line[i]
+            
+            # Track string state to avoid removing // inside strings
+            if char in ('"', "'") and (i == 0 or line[i-1] != '\\'):
+                if not in_string:
+                    in_string = True
+                    string_char = char
+                elif char == string_char:
+                    in_string = False
+                    string_char = None
+            
+            # Remove comments only when not in a string
+            if not in_string and i < len(line) - 1:
+                if line[i:i+2] == '//':
+                    break
+            
+            cleaned.append(char)
+            i += 1
+        
+        lines.append(''.join(cleaned).strip())
     
     # Join and remove extra whitespace
     minified = ' '.join(lines)

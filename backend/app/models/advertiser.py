@@ -6,7 +6,10 @@ import string
 
 
 def generate_container_id():
-    """Generate unique container ID like 'adv_a1b2c3d4'"""
+    """Generate unique container ID like 'adv_a1b2c3d4'
+    Note: Uniqueness is enforced by database UNIQUE constraint on container_id column.
+    If collision occurs (extremely rare), database will raise IntegrityError.
+    """
     random_str = ''.join(secrets.choice(string.ascii_lowercase + string.digits) for _ in range(8))
     return f"adv_{random_str}"
 

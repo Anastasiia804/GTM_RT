@@ -64,8 +64,12 @@ def load_container(
     is_allowed = False
     
     if advertiser:
-        # Parse allowed domains
-        allowed_domains = json.loads(advertiser.domains) if advertiser.domains else []
+        # Parse allowed domains with error handling
+        try:
+            allowed_domains = json.loads(advertiser.domains) if advertiser.domains else []
+        except json.JSONDecodeError:
+            # If JSON parsing fails, treat as no domains configured
+            allowed_domains = []
         
         # Check if domain is allowed and advertiser is active
         is_allowed = is_domain_allowed(referer, allowed_domains) and advertiser.is_active
